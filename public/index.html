@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UNO Online — Play with Friends</title>
+    <meta name="description" content="Play UNO online with friends! Real-time multiplayer UNO card game.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ══════════════════════════ LOBBY ══════════════════════════ -->
+    <div id="lobby-screen" class="screen active">
+        <!-- Animated background blobs -->
+        <div class="lobby-blobs">
+            <div class="blob b1"></div>
+            <div class="blob b2"></div>
+            <div class="blob b3"></div>
+            <div class="blob b4"></div>
+        </div>
+
+        <div class="lobby-wrapper">
+            <!-- Decorative fanned cards behind logo -->
+            <div class="deco-cards">
+                <div class="deco-card dc-r" style="--rot:-25deg;--c:#EF4444">7</div>
+                <div class="deco-card dc-b" style="--rot:-10deg;--c:#3B82F6">⇄</div>
+                <div class="deco-card dc-g" style="--rot:5deg;--c:#22C55E">3</div>
+                <div class="deco-card dc-y" style="--rot:20deg;--c:#EAB308">+2</div>
+            </div>
+
+            <h1 class="brand">
+                <span style="color:#EF4444">U</span><span style="color:#3B82F6">N</span><span
+                    style="color:#22C55E">O</span>
+            </h1>
+            <p class="brand-sub">ONLINE</p>
+
+            <!-- Login form -->
+            <div class="lobby-box" id="lobby-form">
+                <input type="text" id="player-name" class="txt-input" placeholder="Your nickname..." maxlength="15"
+                    autocomplete="off" spellcheck="false">
+
+                <button id="btn-create" class="btn-big btn-purple">
+                    Create Room
+                </button>
+
+                <div class="or-line"><span>OR JOIN</span></div>
+
+                <div class="join-row">
+                    <input type="text" id="room-code-input" class="txt-input code-input" placeholder="CODE"
+                        maxlength="6" autocomplete="off" spellcheck="false">
+                    <button id="btn-join" class="btn-big btn-blue">Join</button>
+                </div>
+            </div>
+
+            <!-- Waiting room -->
+            <div id="waiting-room" class="lobby-box hidden">
+                <p class="wr-label">ROOM CODE</p>
+                <h2 class="wr-code" id="display-room-code"></h2>
+                <p class="wr-hint" id="copy-hint">Tap to copy & share with friends</p>
+
+                <div class="wr-players">
+                    <p class="wr-pl-title">Players <span id="player-count" class="pc-badge">0</span></p>
+                    <ul id="players-list" class="pl-list"></ul>
+                </div>
+
+                <button id="btn-start-game" class="btn-big btn-green hidden">🚀 Start Game</button>
+                <p id="waiting-message" class="wr-wait">
+                    <span class="dots"><i></i><i></i><i></i></span> Waiting for host...
+                </p>
+            </div>
+        </div>
+
+        <div id="error-banner" class="notif hidden"></div>
+    </div>
+
+    <!-- ══════════════════════════ GAME ══════════════════════════ -->
+    <div id="game-screen" class="screen">
+
+        <!-- Top bar -->
+        <header class="top-bar">
+            <div class="tb-l">
+                <span class="tb-logo">UNO</span>
+                <span class="tb-room" id="room-code-header"></span>
+            </div>
+            <div class="tb-c">
+                <div class="tb-status" id="game-status">Starting...</div>
+            </div>
+            <div class="tb-r">
+                <button id="btn-toggle-chat" class="tb-icon" title="Chat">
+                    💬 <span id="chat-badge" class="badge hidden">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Game table -->
+        <main class="table">
+            <!-- Opponents strip -->
+            <section id="opponents-area" class="opp-strip"></section>
+
+            <!-- Last action -->
+            <div id="action-feed" class="action-feed hidden"></div>
+
+            <!-- Table center: piles -->
+            <section class="mid">
+                <div class="dir-label" id="dir-label">↻</div>
+
+                <div class="piles">
+                    <!-- Draw -->
+                    <div class="pile-wrap" id="draw-pile" title="Draw a card">
+                        <div class="uno-back top-back"></div>
+                        <div class="uno-back mid-back"></div>
+                        <div class="uno-back bot-back"></div>
+                        <p class="pile-num" id="draw-count">0</p>
+                    </div>
+
+                    <!-- Discard -->
+                    <div class="pile-wrap discard-wrap">
+                        <div id="top-card" class="uno-card"></div>
+                    </div>
+                </div>
+
+                <div id="cur-color" class="cur-color"></div>
+            </section>
+
+            <!-- My hand -->
+            <section class="my-hand-section">
+                <button id="btn-uno" class="uno-btn hidden">UNO!</button>
+                <div id="player-hand" class="my-hand"></div>
+            </section>
+        </main>
+
+        <!-- Chat -->
+        <aside id="chat-panel" class="chat-panel">
+            <div class="ch-head">
+                <span>💬 Chat</span>
+                <button id="btn-close-chat" class="ch-close">✕</button>
+            </div>
+            <div id="chat-messages" class="ch-body"></div>
+            <form id="chat-form" class="ch-foot">
+                <input type="text" id="chat-input" class="ch-input" placeholder="Type here..." maxlength="500"
+                    autocomplete="off">
+                <button type="submit" class="ch-send">➤</button>
+            </form>
+        </aside>
+
+        <!-- Color picker -->
+        <div id="color-picker-modal" class="modal hidden">
+            <div class="modal-bg"></div>
+            <div class="modal-card">
+                <h3>Choose a color</h3>
+                <div class="cp-grid">
+                    <button class="cp-btn" data-color="red" style="background:#EF4444"></button>
+                    <button class="cp-btn" data-color="blue" style="background:#3B82F6"></button>
+                    <button class="cp-btn" data-color="green" style="background:#22C55E"></button>
+                    <button class="cp-btn" data-color="yellow" style="background:#EAB308"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wild Draw Four challenge -->
+        <div id="challenge-modal" class="modal hidden">
+            <div class="modal-bg"></div>
+            <div class="modal-card">
+                <p class="modal-emoji">⚡</p>
+                <h3>Wild Draw Four!</h3>
+                <p id="challenge-text" class="modal-desc"></p>
+                <p class="modal-hint">Win the challenge → they draw 4. Lose → you draw 6!</p>
+                <div class="modal-btns">
+                    <button id="btn-ch-yes" class="btn-big btn-red">Challenge</button>
+                    <button id="btn-ch-no" class="btn-big btn-outline">Accept +4</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game over -->
+        <div id="gameover-modal" class="modal hidden">
+            <div class="modal-bg"></div>
+            <div class="modal-card go-card">
+                <p class="go-trophy">🏆</p>
+                <h2 id="winner-text">You win!</h2>
+                <p class="modal-desc">What a game!</p>
+                <button id="btn-again" class="btn-big btn-purple">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+
+</html>
