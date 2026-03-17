@@ -106,46 +106,6 @@ uno-game/
 
 ---
 
-## 🌐 Deploy for Free
-
-### Option 1: Render (Recommended — Free Forever)
-
-1. Push code to GitHub
-2. Go to [render.com](https://render.com) → **New Web Service**
-3. Connect your GitHub repo
-4. Settings:
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
-   - **Environment Variables**: Add `ALLOWED_ORIGINS=https://your-app.onrender.com`
-5. Click **Deploy** → Your app is live at `https://your-app.onrender.com`
-
-> ⚠️ Free tier sleeps after 15 min of inactivity. First visit takes ~30s to wake up.
-
-### Option 2: Railway (Free $5/mo Credits)
-
-1. Go to [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub**
-2. Select your repo
-3. Add variable: `ALLOWED_ORIGINS=https://your-app.up.railway.app`
-4. Railway auto-detects Node.js and deploys
-
-### Option 3: Glitch (Free, Always On with Boosting)
-
-1. Go to [glitch.com](https://glitch.com) → **New Project** → **Import from GitHub**
-2. Paste your repo URL
-3. Edit `.env`: `ALLOWED_ORIGINS=https://your-project.glitch.me`
-4. App runs at `https://your-project.glitch.me`
-
-### Option 4: Cyclic (Free, No Sleep)
-
-1. Go to [cyclic.sh](https://cyclic.sh) → **Deploy** → Connect GitHub
-2. Select repo → Deploy
-3. Set env var `ALLOWED_ORIGINS` to your Cyclic URL
-
-### After Deploying
-
-Set `ALLOWED_ORIGINS` to your **actual domain** (e.g., `https://my-uno.onrender.com`). This locks down CORS so only your site can connect.
-
----
 
 ## 🎮 How to Play
 
