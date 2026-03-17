@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UNO Online — Play with Friends</title>
-    <meta name="description" content="Play UNO online with friends! Real-time multiplayer UNO card game.">
+    <meta name="description"
+        content="Play UNO online with friends! Real-time multiplayer UNO card game with custom rules.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
@@ -17,7 +18,6 @@
 
     <!-- ══════════════════════════ LOBBY ══════════════════════════ -->
     <div id="lobby-screen" class="screen active">
-        <!-- Animated background blobs -->
         <div class="lobby-blobs">
             <div class="blob b1"></div>
             <div class="blob b2"></div>
@@ -26,7 +26,6 @@
         </div>
 
         <div class="lobby-wrapper">
-            <!-- Decorative fanned cards behind logo -->
             <div class="deco-cards">
                 <div class="deco-card dc-r" style="--rot:-25deg;--c:#EF4444">7</div>
                 <div class="deco-card dc-b" style="--rot:-10deg;--c:#3B82F6">⇄</div>
@@ -44,6 +43,25 @@
             <div class="lobby-box" id="lobby-form">
                 <input type="text" id="player-name" class="txt-input" placeholder="Your nickname..." maxlength="15"
                     autocomplete="off" spellcheck="false">
+
+                <!-- Avatar Picker -->
+                <div class="avatar-picker">
+                    <p class="av-label">Choose Avatar</p>
+                    <div class="av-grid" id="avatar-grid">
+                        <button class="av-btn selected" data-avatar="🦊">🦊</button>
+                        <button class="av-btn" data-avatar="🐼">🐼</button>
+                        <button class="av-btn" data-avatar="🦁">🦁</button>
+                        <button class="av-btn" data-avatar="🐸">🐸</button>
+                        <button class="av-btn" data-avatar="🦄">🦄</button>
+                        <button class="av-btn" data-avatar="🐉">🐉</button>
+                        <button class="av-btn" data-avatar="🎃">🎃</button>
+                        <button class="av-btn" data-avatar="🤖">🤖</button>
+                        <button class="av-btn" data-avatar="🦈">🦈</button>
+                        <button class="av-btn" data-avatar="🐺">🐺</button>
+                        <button class="av-btn" data-avatar="🦅">🦅</button>
+                        <button class="av-btn" data-avatar="🐙">🐙</button>
+                    </div>
+                </div>
 
                 <button id="btn-create" class="btn-big btn-purple">
                     Create Room
@@ -63,20 +81,103 @@
                 <p class="wr-label">ROOM CODE</p>
                 <h2 class="wr-code" id="display-room-code"></h2>
                 <p class="wr-hint" id="copy-hint">Tap to copy & share with friends</p>
+                <div class="share-link-row">
+                    <button id="btn-share-link" class="btn-share">🔗 Copy Invite Link</button>
+                </div>
 
                 <div class="wr-players">
                     <p class="wr-pl-title">Players <span id="player-count" class="pc-badge">0</span></p>
                     <ul id="players-list" class="pl-list"></ul>
                 </div>
 
+                <!-- Bot controls (host only) -->
+                <div id="bot-controls" class="bot-controls hidden">
+                    <p class="settings-title">🤖 Add Bots</p>
+                    <div class="bot-row">
+                        <select id="bot-difficulty" class="bot-select">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                        <button id="btn-add-bot" class="btn-sm btn-purple">+ Add Bot</button>
+                    </div>
+                </div>
+
+                <!-- Host Settings Panel -->
+                <div id="settings-panel" class="settings-panel hidden">
+                    <p class="settings-title">⚙️ Room Rules</p>
+
+                    <div class="setting-row">
+                        <label>Max Players</label>
+                        <div class="setting-ctrl">
+                            <button class="s-btn s-minus" data-key="maxPlayers">−</button>
+                            <span class="s-val" id="s-maxPlayers">10</span>
+                            <button class="s-btn s-plus" data-key="maxPlayers">+</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-row">
+                        <label>Starting Cards</label>
+                        <div class="setting-ctrl">
+                            <button class="s-btn s-minus" data-key="handSize">−</button>
+                            <span class="s-val" id="s-handSize">7</span>
+                            <button class="s-btn s-plus" data-key="handSize">+</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-row">
+                        <label>UNO Penalty</label>
+                        <div class="setting-ctrl">
+                            <button class="s-btn s-minus" data-key="unoPenalty">−</button>
+                            <span class="s-val" id="s-unoPenalty">2</span>
+                            <button class="s-btn s-plus" data-key="unoPenalty">+</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-row">
+                        <label>Turn Timer (s)</label>
+                        <div class="setting-ctrl">
+                            <button class="s-btn s-minus" data-key="turnTimer">−</button>
+                            <span class="s-val" id="s-turnTimer">0</span>
+                            <button class="s-btn s-plus" data-key="turnTimer">+</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-row">
+                        <label>Stack +2 on +2</label>
+                        <label class="toggle">
+                            <input type="checkbox" id="s-drawStacking">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <label>Jump-In</label>
+                        <label class="toggle">
+                            <input type="checkbox" id="s-jumpIn">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <label>Play After Draw</label>
+                        <label class="toggle">
+                            <input type="checkbox" id="s-forcePlayAfterDraw">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Non-host sees read-only settings -->
+                <div id="settings-display" class="settings-display hidden"></div>
+
                 <button id="btn-start-game" class="btn-big btn-green hidden">🚀 Start Game</button>
+                <button id="btn-leave-room" class="btn-big btn-outline btn-leave">🚪 Leave Room</button>
                 <p id="waiting-message" class="wr-wait">
                     <span class="dots"><i></i><i></i><i></i></span> Waiting for host...
                 </p>
             </div>
         </div>
-
-        <div id="error-banner" class="notif hidden"></div>
     </div>
 
     <!-- ══════════════════════════ GAME ══════════════════════════ -->
@@ -92,11 +193,33 @@
                 <div class="tb-status" id="game-status">Starting...</div>
             </div>
             <div class="tb-r">
+                <!-- Theme selector -->
+                <select id="theme-select" class="theme-select" title="Theme">
+                    <option value="dark">🌙 Dark</option>
+                    <option value="light">☀️ Light</option>
+                    <option value="ocean">🌊 Ocean</option>
+                    <option value="sunset">🌅 Sunset</option>
+                </select>
+                <!-- Sound controls -->
+                <button id="btn-sfx" class="tb-icon" title="Sound Effects">🔊</button>
+                <button id="btn-music" class="tb-icon" title="Background Music">🎵</button>
+                <!-- Sort hand -->
+                <button id="btn-sort" class="tb-icon" title="Sort Hand (S)">🃏</button>
+                <!-- Pause (host only) -->
+                <button id="btn-pause" class="tb-icon hidden" title="Pause Game">⏸️</button>
+                <!-- Leave game -->
+                <button id="btn-leave-game" class="tb-icon" title="Leave Game">🚪</button>
+                <!-- Chat -->
                 <button id="btn-toggle-chat" class="tb-icon" title="Chat">
                     💬 <span id="chat-badge" class="badge hidden">0</span>
                 </button>
             </div>
         </header>
+
+        <!-- Spectator banner -->
+        <div id="spectator-banner" class="spectator-banner hidden">
+            👀 You are spectating this game
+        </div>
 
         <!-- Game table -->
         <main class="table">
@@ -106,13 +229,18 @@
             <!-- Last action -->
             <div id="action-feed" class="action-feed hidden"></div>
 
+            <!-- Turn timer bar -->
+            <div id="turn-timer-bar" class="turn-timer-bar hidden">
+                <div id="turn-timer-fill" class="turn-timer-fill"></div>
+            </div>
+
             <!-- Table center: piles -->
             <section class="mid">
                 <div class="dir-label" id="dir-label">↻</div>
 
                 <div class="piles">
                     <!-- Draw -->
-                    <div class="pile-wrap" id="draw-pile" title="Draw a card">
+                    <div class="pile-wrap" id="draw-pile" title="Draw a card (D)">
                         <div class="uno-back top-back"></div>
                         <div class="uno-back mid-back"></div>
                         <div class="uno-back bot-back"></div>
@@ -125,8 +253,33 @@
                     </div>
                 </div>
 
-                <div id="cur-color" class="cur-color"></div>
+                <div class="mid-info">
+                    <div id="cur-color" class="cur-color"></div>
+                    <div id="draw-stack-badge" class="draw-stack-badge hidden">+0</div>
+                </div>
             </section>
+
+            <!-- Emoji reactions bar -->
+            <div class="emoji-bar">
+                <button class="emoji-btn" data-emoji="😂">😂</button>
+                <button class="emoji-btn" data-emoji="😮">😮</button>
+                <button class="emoji-btn" data-emoji="😡">😡</button>
+                <button class="emoji-btn" data-emoji="🎉">🎉</button>
+                <button class="emoji-btn" data-emoji="👏">👏</button>
+                <button class="emoji-btn" data-emoji="💀">💀</button>
+                <button class="emoji-btn" data-emoji="🔥">🔥</button>
+                <button class="emoji-btn" data-emoji="❤️">❤️</button>
+            </div>
+
+            <!-- Quick Chat -->
+            <div class="quick-chat-bar">
+                <button class="qc-btn" data-msg="Nice! 👍">Nice!</button>
+                <button class="qc-btn" data-msg="Hurry up! ⏰">Hurry!</button>
+                <button class="qc-btn" data-msg="No way! 😱">No way!</button>
+                <button class="qc-btn" data-msg="GG! 🎮">GG!</button>
+                <button class="qc-btn" data-msg="Oops! 😅">Oops!</button>
+                <button class="qc-btn" data-msg="Lucky! 🍀">Lucky!</button>
+            </div>
 
             <!-- My hand -->
             <section class="my-hand-section">
@@ -149,6 +302,19 @@
             </form>
         </aside>
 
+        <!-- Floating emoji display -->
+        <div id="emoji-float-container" class="emoji-float-container"></div>
+
+        <!-- Pause overlay -->
+        <div id="pause-overlay" class="pause-overlay hidden">
+            <div class="pause-content">
+                <p class="pause-icon">⏸️</p>
+                <h2>Game Paused</h2>
+                <p class="pause-sub">Waiting for host to resume...</p>
+                <button id="btn-resume" class="btn-big btn-green hidden">▶️ Resume Game</button>
+            </div>
+        </div>
+
         <!-- Color picker -->
         <div id="color-picker-modal" class="modal hidden">
             <div class="modal-bg"></div>
@@ -158,7 +324,7 @@
                     <button class="cp-btn" data-color="red" style="background:#EF4444"></button>
                     <button class="cp-btn" data-color="blue" style="background:#3B82F6"></button>
                     <button class="cp-btn" data-color="green" style="background:#22C55E"></button>
-                    <button class="cp-btn" data-color="yellow" style="background:#EAB308"></button>
+                    <button class="cp-btn" data-color="yellow" style="background:#FACC15"></button>
                 </div>
             </div>
         </div>
@@ -178,6 +344,21 @@
             </div>
         </div>
 
+        <!-- Drawn card playable prompt -->
+        <div id="drawn-card-modal" class="modal hidden">
+            <div class="modal-bg"></div>
+            <div class="modal-card">
+                <p class="modal-emoji">🃏</p>
+                <h3>You drew a playable card!</h3>
+                <div id="drawn-card-preview" class="drawn-preview"></div>
+                <p class="modal-desc">Do you want to play it?</p>
+                <div class="modal-btns">
+                    <button id="btn-play-drawn" class="btn-big btn-green">Play It</button>
+                    <button id="btn-keep-drawn" class="btn-big btn-outline">Keep It</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Game over -->
         <div id="gameover-modal" class="modal hidden">
             <div class="modal-bg"></div>
@@ -185,12 +366,36 @@
                 <p class="go-trophy">🏆</p>
                 <h2 id="winner-text">You win!</h2>
                 <p class="modal-desc">What a game!</p>
+                <!-- Scoreboard in game over -->
+                <div id="scoreboard" class="scoreboard"></div>
                 <button id="btn-again" class="btn-big btn-purple">Play Again</button>
+                <p id="play-again-wait" class="wr-wait hidden">
+                    <span class="dots"><i></i><i></i><i></i></span> Waiting for host to restart...
+                </p>
+            </div>
+        </div>
+
+        <!-- Kicked modal -->
+        <div id="kicked-modal" class="modal hidden">
+            <div class="modal-bg"></div>
+            <div class="modal-card">
+                <p class="modal-emoji">👢</p>
+                <h3>You've been kicked</h3>
+                <p class="modal-desc">The host removed you from the room.</p>
+                <div class="modal-btns">
+                    <button id="btn-kicked-ok" class="btn-big btn-purple">Back to Lobby</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Keyboard shortcuts helper -->
+    <div id="shortcuts-tooltip" class="shortcuts-tooltip hidden">
+        <p><b>Shortcuts:</b> D=Draw | U=UNO | 1-9=Play card | S=Sort | Esc=Close</p>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
+    <script src="sounds.js"></script>
     <script src="client.js"></script>
 </body>
 

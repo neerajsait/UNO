@@ -1,0 +1,11 @@
+Sound Effects, 🎵 Background Music	, Card Animations, Mobile Responsiveness,  Player Avatars, Leave Room Button, Fix "Play Again" for Non-Host	Shows button but does nothing — should show "Waiting for host..."
+ AI/Bot Players	Let solo players practice or fill empty slots. Huge differentiator
+👀 Spectator Mode, Player Kick	Let host remove toxic/AFK players
+⏸️ Pause Game	Host can pause/resume (useful for group calls)
+🃏 Card Hand Sorting	Auto-sort by color, or by value. Let players drag to reorder
+💬 Predefined Quick Chat	"Nice!" "Hurry up!" "No way!" buttons for fast reactions
+🎨 Theme Selection	Light mode, multiple color themes, card back ,⌨️ Keyboard Shortcuts	D to draw, U for UNO, 1-9 to play cards
+
+
+update this
+i dont want to use any paid apis , redis or storasge only in browser max reduse to use less broeswer storage
