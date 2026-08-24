@@ -1,3 +1,38 @@
+# UNO
+
+> Browser-based UNO card game built with JavaScript
+
+Built with JavaScript and focused on browser-game, card-game, game, javascript.
+
+## About this project
+
+This repository is part of **Neeraj Sai's** growing collection of software projects, experiments, and learning builds. It reflects a practical, curious approach to creating useful products and understanding how they work under the hood.
+
+## Getting started
+
+Clone the repository and follow the setup instructions for the project's framework or language:
+
+```bash
+git clone https://github.com/neerajsait/UNO.git
+cd UNO
+```
+
+Check the project files for the available run commands and configuration requirements.
+
+## Links
+
+[Repository](https://github.com/neerajsait/UNO)
+
+## Author
+
+**Tiruveedhi Neeraj Venkata Sai**
+
+- GitHub: [@neerajsait](https://github.com/neerajsait)
+- Portfolio: [neeraj's portfolio](https://github.com/neerajsait/portfoliomain)
+
+
+## Existing project documentation
+
 # 🎴 UNO Online — Multiplayer Card Game
 
 <div align="center">
